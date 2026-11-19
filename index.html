@@ -120,6 +120,9 @@ button.sq{border:0;padding:0;cursor:pointer;font-family:inherit}
 .tsel,.plan{width:100%;max-width:640px;box-sizing:border-box;padding:12px 14px;border-radius:14px;border:2px solid #9fb6dc;font-family:inherit;font-size:16px;background:#fff;color:#12264f;margin:6px 0;display:block}
 .plan{font-size:15px;line-height:1.55}
 .tips{max-width:640px}.tips li{margin:6px 0;font-weight:700}
+.rt{border-collapse:collapse;width:100%;max-width:560px}
+.rt td,.rt th{padding:10px 12px;border-bottom:1px solid rgba(120,140,180,.35);text-align:left;font-weight:700}
+.rt tr.me{background:rgba(245,184,46,.25)}
 </style>
 </head>
 <body>
@@ -132,7 +135,7 @@ button.sq{border:0;padding:0;cursor:pointer;font-family:inherit}
    <a href="#oyin"><span>🎮</span>Ойын арқылы үйрен</a>
    <a href="#synyptar"><span>🎓</span>1–4 сынып</a>
    <a href="#mugalim"><span>👥</span>Мұғалімдерге</a>
-   <a href="#joba"><span>ℹ️</span>Жоба туралы</a>
+   <a href="#reyting"><span>🏆</span>Рейтинг</a><a href="#joba"><span>ℹ️</span>Жоба туралы</a>
   </nav>
   <div class="score" id="score">★ 0 ұпай ♛</div>
   <button class="menu" id="menu" aria-label="Мәзірді ашу" aria-expanded="false">☰</button>
@@ -164,6 +167,7 @@ button.sq{border:0;padding:0;cursor:pointer;font-family:inherit}
 <section class="page" id="oyin"><h2>Ойын тапсырмалары</h2><p>Ойынды таңда да, сұрақтарға жауап бер: әр дұрыс жауап — 5 ұпай.</p><div id="game"></div><p><a href="#">← Басты бетке</a></p></section>
 <section class="page" id="synyptar"><h2>1–4 сынып</h2><p>Сыныпты таңдап, оның бағдарламасын көр.</p><div class="gtabs" id="gtabs"></div><div id="gpanel"></div><p><a href="#">← Басты бетке</a></p></section>
 <section class="page" id="mugalim"><h2>Мұғалімдерге</h2><p>Сыныпты және тақырыпты таңдасаңыз, сабақ жоспарының дайын үлгісі жасалады.</p><div class="gtabs" id="ttabs"></div><select id="tsel" class="tsel" aria-label="Тақырып"></select><textarea id="plan" class="plan" rows="19" readonly></textarea><div class="gl"><button class="pc" id="cpy">Көшіру</button></div><div class="tips"><h3>Платформаны сабақта қалай қолдануға болады</h3><ul><li>Түсіндіру кезінде «Шахмат әліппесі» тақтасын проекторға шығарыңыз.</li><li>Бекіту кезінде «Ойын тапсырмалары» бөлімінен сәйкес ойынды жұппен немесе бүкіл сыныппен ойнаңыз.</li><li>Әр дұрыс жауап 5 ұпай береді, бұл оқушыларды жарысқа шақырады. Ұпай бетті жаңартқанда жоғалады.</li><li>Үй тапсырмасы ретінде сабақта ойналған ойынды ұсыныңыз.</li></ul></div><p><a href="#">← Басты бетке</a></p></section>
+<section class="page" id="reyting"></section>
 <section class="page" id="joba"><h2>Жоба туралы</h2><p>«Шахмат әлемі» — авторлық білім беру жобасы. Автор: Бижанова Бахытгүл Құлекенқызы. <a href="#">← Басты бетке</a></p></section>
 </main>
 <footer>
@@ -485,6 +489,32 @@ var B=[['#dcecfc','Мақсаты','Балаларға шахмат негізд
 ['#d9f3dc','Платформада не бар','<ul><li>Шахмат әліппесі: фигуралар мен жүрістерді тақтада көріп үйрену және жаттығулар</li><li>Ойын тапсырмалары: 21 ойын</li><li>1–4 сыныпқа арналған «Шахмат негіздері» курсының оқу-тақырыптық жоспарлары (1 сынып — 33, 2 сынып — 68, 3 сынып — 68, 4 сынып — 34 сағат)</li><li>Мұғалімдерге: сабақ жоспарының дайын үлгісін жасайтын құрал</li></ul>'],
 ['#fffbe0','Мектеп','Шалқар қаласы “№2 мектеп-гимназия” КММ'],['#e9e0fa','Автор','Бижанова Бахытгүл Қүлекенқызы. «Шахмат әлемі» — авторлық білім беру жобасы. Білім – болашақтың кілті!']];
 j.innerHTML='<h2>Жоба туралы</h2><p class="desc">«Шахмат әлемі» — 1–4 сынып оқушыларына шахматты қазақ тілінде қызықты түрде үйретуге арналған авторлық білім беру жобасы.</p>'+B.map(function(b){return '<div class="gp" style="background:'+b[0]+';margin:12px 0"><h3>'+b[1]+'</h3>'+(b[2].charAt(0)=='<'?b[2]:'<p style="margin:0;font-weight:700">'+b[2]+'</p>')+'</div>'}).join('')+'<p><a href="#">← Басты бетке</a></p>'})();
+(function(){
+var LS={g:function(k){try{return localStorage.getItem(k)}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+var P={};try{P=JSON.parse(LS.g('sa_players')||'{}')||{}}catch(e){P={}}
+var name=LS.g('sa_name')||'Қонақ';if(!P[name])P[name]={pts:0,t:0};
+var sc=document.getElementById('score'),R=document.getElementById('reyting'),pts=P[name].pts||0,armed=false;
+function save(){P[name]={pts:pts,t:Date.now()};LS.s('sa_players',JSON.stringify(P));LS.s('sa_name',name)}
+function show(){sc.textContent=name+': ★ '+pts+' ұпай ♛'}
+window.addPts=function(n){pts+=n;save();show();if(location.hash=='#reyting')render()};
+sc.style.cursor='pointer';sc.onclick=function(){location.hash='reyting'};
+function render(){armed=false;
+ R.innerHTML='<h2>Нәтиже кестесі</h2><p class="desc">Нәтижелер осы құрылғыда (браузерде) сақталады. Бір құрылғыда бірнеше оқушы ойнай алады: әрқайсысы өз атын жазады.</p><div class="gl" style="margin:10px 0"><input id="pname" class="tsel" style="max-width:260px;margin:0" maxlength="20" placeholder="Атың"><button class="pc" id="pset">Атымды сақтау</button></div><p class="desc" id="pcur"></p><div style="overflow-x:auto"><table class="rt" id="rt"></table></div><div class="gl"><button class="pc" id="pclr">Кестені тазалау</button></div><p><a href="#">← Басты бетке</a></p>';
+ var inp=document.getElementById('pname'),tb=document.getElementById('rt');
+ if(name!='Қонақ')inp.value=name;
+ document.getElementById('pcur').textContent='Қазіргі ойыншы: '+name+' — '+pts+' ұпай';
+ var rows=Object.keys(P).filter(function(k){return P[k].pts>0}).sort(function(a,b){return P[b].pts-P[a].pts}).slice(0,20);
+ if(!rows.length){var tr0=document.createElement('tr'),td0=document.createElement('td');td0.textContent='Әзірге нәтиже жоқ. Ойын ойнап көр!';tr0.appendChild(td0);tb.appendChild(tr0)}
+ rows.forEach(function(k,i){var tr=document.createElement('tr'),a=document.createElement('td'),b=document.createElement('td'),c=document.createElement('td');
+  a.textContent=['🥇','🥈','🥉'][i]||(i+1)+'.';b.textContent=k;c.textContent=P[k].pts+' ұпай';
+  if(k==name)tr.className='me';tr.appendChild(a);tr.appendChild(b);tr.appendChild(c);tb.appendChild(tr)});
+ document.getElementById('pset').onclick=function(){save();var v=inp.value.trim().slice(0,20)||'Қонақ';name=v;if(!P[name])P[name]={pts:0,t:0};pts=P[name].pts||0;save();show();render()};
+ var clr=document.getElementById('pclr');
+ clr.onclick=function(){if(!armed){armed=true;clr.textContent='Растау: барлығын жою';return}
+  P={};name='Қонақ';pts=0;P[name]={pts:0,t:0};save();show();render()}}
+window.addEventListener('hashchange',function(){if(location.hash=='#reyting')render()});
+show();if(location.hash=='#reyting')render();
+})();
 </script>
 </body>
 </html>
